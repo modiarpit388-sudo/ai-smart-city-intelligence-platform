@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: smartcity
+      POSTGRES_PASSWORD: smartcity
+      POSTGRES_DB: smartcity
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartcity"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql://smartcity:smartcity@db:5432/smartcity
+      SECRET_KEY: ${SECRET_KEY:-change-me}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes: [models:/app/instance/models]
+    ports: ["5000:5000"]
+
+volumes:
+  pgdata:
+  models:
