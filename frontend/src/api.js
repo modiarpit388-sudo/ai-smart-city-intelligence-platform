@@ -1,7 +1,10 @@
 // Tiny fetch wrapper: adds the JWT, parses JSON, throws readable errors.
 const KEY = 'scai_token'
-export const getToken = () => localStorage.getItem(KEY)
-export const setToken = (t) => (t ? localStorage.setItem(KEY, t) : localStorage.removeItem(KEY))
+// Session storage = the login lives only in this browser tab. Closing the tab/browser signs you out, so the site
+// always opens on the login page; a normal page refresh keeps you signed in.
+try { localStorage.removeItem(KEY) } catch { /* old persistent token from earlier versions */ }
+export const getToken = () => sessionStorage.getItem(KEY)
+export const setToken = (t) => (t ? sessionStorage.setItem(KEY, t) : sessionStorage.removeItem(KEY))
 
 async function request(method, path, body) {
   const headers = {}

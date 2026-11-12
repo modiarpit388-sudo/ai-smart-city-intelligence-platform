@@ -178,6 +178,7 @@ button { font-family: inherit; }
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
 .input, select.input, textarea.input { width: 100%; background: rgba(4, 9, 22, .7); border: 1px solid var(--line); color: var(--text); padding: 10px 13px; border-radius: 11px; font-family: inherit; font-size: 14px; outline: none; transition: .2s; }
+.otp-input { text-align: center; font-size: 26px; font-weight: 700; letter-spacing: .5em; padding: 12px 8px 12px calc(8px + .5em); font-variant-numeric: tabular-nums; }
 .input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, .12); }
 .sel-area { width: 230px; padding: 7px 32px 7px 12px; }
 .sel-filter { width: 140px; }
@@ -253,7 +254,11 @@ table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
 /* map */
 .map-box { border-radius: var(--r); overflow: hidden; border: 1px solid var(--line-hi); position: relative; box-shadow: 0 0 50px rgba(34, 211, 238, .08); }
 .leaflet-container { background: #08101f; font-family: var(--font-body); }
-.leaflet-tile-pane { filter: saturate(.85) brightness(1.05); }
+/* "Dark map": standard OSM tiles recoloured to match the dark theme (roads + labels stay clearly readable) */
+.leaflet-tile-pane .tiles-dark { filter: invert(1) hue-rotate(195deg) brightness(1.15) contrast(.95) saturate(.75); }
+.leaflet-control-layers { background: var(--panel-solid) !important; color: var(--text) !important; border: 1px solid var(--line-hi) !important; border-radius: 12px !important; box-shadow: none !important; }
+.leaflet-control-layers-expanded { padding: 8px 12px !important; font-size: 13px; }
+.leaflet-control-layers-toggle { border-radius: 12px; }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--panel-solid); color: var(--text); border: 1px solid var(--line-hi); border-radius: 14px; }
 .leaflet-container a.leaflet-popup-close-button { color: var(--mute); }
 .leaflet-control-zoom a { background: var(--panel-solid) !important; color: var(--text) !important; border-color: var(--line) !important; }
@@ -410,3 +415,12 @@ table.t { width: 100%; border-collapse: collapse; font-size: 13px; }
   .userbox { padding: 10px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition: none !important; } }
+
+/* ------------------------------------------------------------ "Designed by" credit */
+.credit { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); text-align: center; padding: 8px 0 0; }
+.credit b { color: var(--cyan); font-weight: 600; letter-spacing: .2em; }
+.auth > .credit { position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5; padding: 0; color: var(--mute); text-shadow: 0 1px 10px rgba(0, 0, 0, .9); }
+
+/* password rules checklist */
+.pw-rules { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 3px; font-size: 12px; color: var(--dim); }
+.pw-rules li.ok { color: var(--green); }

@@ -7,6 +7,7 @@ import { useAuth } from '../auth'
 import { Ambient } from './CityBackdrop'
 import Assistant from './Assistant'
 import { fmtTime, Badge } from '../ui'
+import Credit from './Credit'
 
 const NAV = [
   { group: 'Overview' },
@@ -118,8 +119,9 @@ export default function Layout() {
           <div className="userbox">
             <div className="avatar">{user.name[0]}</div>
             <div className="who"><b>{user.name}</b><small>{user.role === 'authority' ? user.department?.name : user.role}</small></div>
-            <button className="icon-btn" title="Sign out" onClick={() => { logout(); nav('/login') }}><LogOut /></button>
+            <button className="icon-btn" title="Sign out" onClick={() => { logout(); nav('/login', { replace: true }) }}><LogOut /></button>
           </div>
+          <Credit />
         </aside>
         <div className="main">
           <div className="topbar">

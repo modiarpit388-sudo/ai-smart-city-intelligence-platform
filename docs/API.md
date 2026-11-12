@@ -4,7 +4,10 @@
 |---|---|---|
 | `GET /health` | public | health check |
 | `GET /auth/areas` | public | localities for the registration form |
-| `POST /auth/register` | public | citizen registration `{name,email,password,area_id}` |
+| `POST /auth/register` | public | step 1 of registration `{name,email,password,area_id}` → emails a 6-digit OTP, returns `202 {verification_required,email,expires_in,resend_in}` (no account yet) |
+| `POST /auth/verify-otp` | public | step 2 `{email,otp}` → creates the citizen account, returns `{token,user}`. Errors: `otp_invalid`, `otp_expired`, `otp_locked` |
+| `POST /auth/logout` | public | signs out: cancels this login's session key (`jti`) so the token can never be reused |
+| `POST /auth/resend-otp` | public | `{email}` → new OTP (60 s cooldown, `429` with `retry_after` otherwise) |
 | `POST /auth/login` | public | `{email,password}` → `{token,user}` |
 | `GET/PUT /auth/me` | any | profile, change home area / name / password |
 | `GET /city/areas` | any | list of localities |

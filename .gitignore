@@ -1,26 +1,23 @@
-# Python virtual environments
-
+# Python
 .venv/
 venv/
 env/
-
-# Python cache files
-
-**pycache**/
+__pycache__/
 *.py[cod]
 
-# Node.js dependencies
-
+# Node
 node_modules/
 
-# Environment variables and secrets
-
+# Secrets (never upload these)
 .env
 .env.*
 !.env.example
 
-# Editor and operating system files
+# Local data: users and trained models (rebuilt automatically on first run)
+backend/instance/*.db
+backend/instance/models/
 
+# Editor / OS
 .vscode/
 .DS_Store
 Thumbs.db

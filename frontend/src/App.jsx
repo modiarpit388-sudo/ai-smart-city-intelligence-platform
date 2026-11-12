@@ -30,7 +30,7 @@ function Guard({ roles, children }) {
 export default function App() {
   const { user, ready } = useAuth()
   if (!ready) return <Loader text="Booting city systems…" />
-  if (!user) return <Routes><Route path="*" element={<Login />} /></Routes>
+  if (!user) return <Routes><Route path="/login" element={<Login />} /><Route path="*" element={<Navigate to="/login" replace />} /></Routes>
   const all = ['citizen', 'authority', 'admin']
   return (
     <Routes>

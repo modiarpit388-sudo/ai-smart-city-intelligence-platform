@@ -38,7 +38,8 @@ export default function Users() {
             <h3>Add user</h3>
             <div className="field"><label>Name</label><input className="input" value={f.name} onChange={set('name')} /></div>
             <div className="field"><label>Email</label><input className="input" value={f.email} onChange={set('email')} /></div>
-            <div className="field"><label>Password</label><input className="input" type="password" value={f.password} onChange={set('password')} /></div>
+            <div className="field"><label>Password</label><input className="input" type="password" value={f.password} onChange={set('password')} />
+              <span className="mute" style={{ fontSize: 12 }}>Min 8 characters with uppercase, lowercase, a digit and a special character.</span></div>
             <div className="grid g2"><div className="field"><label>Role</label><select className="input" value={f.role} onChange={set('role')}><option>authority</option><option>citizen</option><option>admin</option></select></div>
               {f.role === 'authority' && <div className="field"><label>Department</label><select className="input" value={f.department_id} onChange={set('department_id')}><option value="">Select…</option>{data.departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select></div>}</div>
             {err && <div className="err">{err}</div>}

@@ -75,6 +75,30 @@ class Citizen(db.Model):
     home_area_id = db.Column(db.Integer, db.ForeignKey("locations.id"))
 
 
+class PendingRegistration(db.Model):
+    """A sign-up waiting for email verification. The real User row is only created once the OTP is verified."""
+    __tablename__ = "pending_registrations"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(160), unique=True, nullable=False, index=True)
+    name = db.Column(db.String(120), nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    area_id = db.Column(db.Integer, db.ForeignKey("locations.id"), nullable=True)
+    phone = db.Column(db.String(20))
+    address = db.Column(db.String(200))
+    otp_hash = db.Column(db.String(64), nullable=False)  # HMAC-SHA256 – the plain OTP is never stored
+    otp_expires_at = db.Column(db.DateTime, nullable=False)
+    attempts = db.Column(db.Integer, default=0)
+    last_sent_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+
+
+class RevokedSession(db.Model):
+    """A login session that was signed out. Its key (jti) is refused even though the token has not expired yet."""
+    __tablename__ = "revoked_sessions"
+    jti = db.Column(db.String(64), primary_key=True)
+    expires_at = db.Column(db.DateTime, nullable=False, index=True)  # after this the token is dead anyway -> row can be purged
+
+
 class Admin(db.Model):
     """Admin profile (extends users where role == 'admin')."""
     __tablename__ = "admins"

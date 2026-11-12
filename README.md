@@ -1,5 +1,7 @@
 # 🏙️ AI Smart City Intelligence Platform
 
+> Designed by **ARPIT MODI**
+
 A complete full-stack **AI + ML + NLP** web application for urban decision support (Bengaluru, 20 localities).
 
 > *An AI-powered Smart City Intelligence and Decision Support Platform that integrates multiple machine-learning
@@ -63,7 +65,7 @@ npm run build                                   # rebuilds into backend/static
 | Authority – Electricity | `electricity@smartcity.ai` | `Authority@123` |
 | Authority – Waste | `waste@smartcity.ai` | `Authority@123` |
 
-Citizens can also **register** themselves. Admins create authority accounts (Admin → Users).
+Citizens can also **register** themselves (the email is verified with a 6-digit OTP – see `.env.example` for SMTP setup; without SMTP the code is printed in the server console). Admins create authority accounts (Admin → Users).
 
 ---
 

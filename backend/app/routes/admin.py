@@ -10,6 +10,7 @@ from ..auth import auth_required
 from ..extensions import db
 from ..ml import trainer
 from ..ml.registry import MODULES
+from ..services.password_policy import check_password
 from ..models import (Alert, Complaint, Department, MLModel, Notification, User)
 from ..services.ingest import TABLES, dataset_summary, ensure_data_current, insert_df
 
@@ -29,8 +30,10 @@ def users():
 def create_user():
     d = request.get_json(force=True) or {}
     email = (d.get("email") or "").strip().lower()
-    if not email or not d.get("name") or len(d.get("password") or "") < 6:
-        return jsonify(error="Name, email and a password of 6+ characters are required"), 400
+    if not email or not d.get("name"):
+        return jsonify(error="Name, email and a password are required"), 400
+    if (msg := check_password(d.get("password"))):
+        return jsonify(error=msg), 400
     if User.query.filter_by(email=email).first():
         return jsonify(error="Email already exists"), 409
     role = d.get("role", "authority")
@@ -55,6 +58,8 @@ def update_user(uid):
         if f in d:
             setattr(u, f, d[f])
     if d.get("password"):
+        if (msg := check_password(d["password"])):
+            return jsonify(error=msg), 400
         u.set_password(d["password"])
     db.session.commit()
     return jsonify(user=u.to_dict())

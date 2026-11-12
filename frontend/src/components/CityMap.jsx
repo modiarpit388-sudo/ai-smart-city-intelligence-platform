@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { MapContainer, Marker, TileLayer, Tooltip as LTooltip, useMap } from 'react-leaflet'
+import { LayersControl, MapContainer, Marker, TileLayer, Tooltip as LTooltip, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { aqiColor, riskColor, trafficColor } from '../ui'
@@ -36,7 +36,21 @@ export default function CityMap({ areas, layer = 'traffic', onSelect, selectedId
   return (
     <div className="map-box" style={{ height }}>
       <MapContainer center={[12.9716, 77.6146]} zoom={11} style={{ height: '100%', width: '100%' }} scrollWheelZoom>
-        <TileLayer attribution='&copy; OpenStreetMap &copy; CARTO' url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+        {/* All base maps below work without an API key. Use the control (top-right) to switch. */}
+        <LayersControl position="topright">
+          <LayersControl.BaseLayer checked name="Dark map">
+            <TileLayer className="tiles-dark" maxZoom={19} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name="Street map">
+            <TileLayer maxZoom={19} attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer name="Satellite">
+            <TileLayer maxZoom={18} attribution="Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics"
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
+          </LayersControl.BaseLayer>
+        </LayersControl>
         {sel && <Fly target={sel} />}
         {areas.map((a) => (
           <Marker key={a.id} position={[a.lat, a.lng]} icon={pinIcon(cfg.color(a), cfg.val(a), cfg.hot(a), a.id === selectedId)} eventHandlers={{ click: () => onSelect && onSelect(a) }}>
